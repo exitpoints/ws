@@ -6,51 +6,10 @@
             integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
             crossorigin="anonymous">
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/webmidi"></script>
+
     </head>
-    <style>
-        /* Dropdown Button */
-        .dropbtn {
-        background-color: #4CAF50;
-        color: white;
-        padding: 16px;
-        font-size: 16px;
-        border: none;
-        }
-
-        /* The container <div> - needed to position the dropdown content */
-        .dropdown {
-        position: relative;
-        display: inline-block;
-        }
-
-        /* Dropdown Content (Hidden by Default) */
-        .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #f1f1f1;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 1;
-        }
-
-        /* Links inside the dropdown */
-        .dropdown-content a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        }
-
-        /* Change color of dropdown links on hover */
-        .dropdown-content a:hover {background-color: #ddd;}
-
-        /* Show the dropdown menu on hover */
-        .dropdown:hover .dropdown-content {display: block;}
-
-        /* Change the background color of the dropdown button when the dropdown content is shown */
-        .dropdown:hover .dropbtn {background-color: #3e8e41;}
-    </style>
-    <body>
+       <body>
         <h1>Exit Points experimental clock</h1>
         <br>
         The app is hosted on a free cloud instance, so it is configured to stop running if it doesn't receive a ping from this webpage after 30 minutes. 
@@ -84,9 +43,16 @@
 
             </div>
           </div> -->
-          Just to test that this works... Select your MIDI input and that device should play the theme song from stranger things (not mapped to bpm yet)
-          <select id="MIDIOutputSelector">
-			<option value="None">-- Select --</option>
+        Set device to receive MIDI clock from this page
+        <br>
+        <select id="MIDIOutputSelector">
+			<option value="None">-- Select Output --</option>
+			
+        </select>
+        <br><br>
+        Select Not ready yet<br>
+        <select id="MIDIInputSelector">
+			<option value="None">-- Select Input --</option>
 			
         </select>
     
@@ -120,48 +86,23 @@
 
 
 let midiOutput = null;
+let midiInput = null;
+let outputs
+let inputs
+let manufacturer = null
 
-////// just for experimenting: play the stranger things theme: 
-let currentSequenceId = -1;
-
-const START = 41;
-
-let intervals = [0, 4, 7, 11, 12, 11, 7, 4];
-sequence =  intervals.map(x => x + START);
-
-const NOTE_ON = 0x90;
-const NOTE_OFF = 0x80;
-
-let NOTE_DURATION = 300;
-
-
-const playNote = function() {
-  if (currentSequenceId >= 0) {
-    midiOutput.send([NOTE_OFF, sequence[currentSequenceId], 0x7f]);
-  }
-
-  currentSequenceId++;
-  if (currentSequenceId >= sequence.length) {
-    currentSequenceId = 0;
-  }
-  midiOutput.send([NOTE_ON, sequence[currentSequenceId], 0x7f]);
-
-  setTimeout(playNote, NOTE_DURATION);
-}
-//
-
-let outputs = []
-    navigator.requestMIDIAccess()
-    .then(function(midiAccess) {
-        outputs = Array.from(midiAccess.outputs.values());
-    // console.log(outputs);
+// let outputs = []
+//     navigator.requestMIDIAccess()
+//     .then(function(midiAccess) {
+//         outputs = Array.from(midiAccess.outputs.values());
+//     // console.log(outputs);
 
 
 
-    for(i =0; i< outputs.length; i++){
-        $('#MIDIOutputSelector').append('<option id="' + i + '">' + outputs[i].name + '</option>');
-    }
-});
+//     for(i =0; i< outputs.length; i++){
+//         $('#MIDIOutputSelector').append('<option id="' + i + '">' + outputs[i].name + '</option>');
+//     }
+// });
     // midiOutput.send([0b10000000, 0b00011100, 01111111]); // binary
 $("#MIDIOutputSelector").change(function() {
     var id = $(this).find('option:selected').attr('id');
@@ -169,10 +110,30 @@ $("#MIDIOutputSelector").change(function() {
     // var id = $(this).children(":selected").attr("id");
     console.log('MIDI Output set to: ', outputs[id].name)
     midiOutput = outputs[id]
-    playNote()
+    if (outputs[id].manufacturer){
+        manufacturer = outputs[id].manufacturer
+        console.log(manufacturer)
+    }
+    // midiOutput.playNote("C3");
+    midiOutput.sendClock();
     // midiOutput.send([250])
     
 });
+
+$("#MIDIInputSelector").change(function() {
+    var id = $(this).find('option:selected').attr('id');
+
+    // var id = $(this).children(":selected").attr("id");
+    console.log('MIDI Input set to: ', inputs[id].name)
+    midiInput = inputs[id]
+    // midiInput.playNote("C3");
+    // midiOutput.send([250])
+    midiInput.addListener('gate', "all", function(e) {
+    console.log("gate value: " + e.value);
+});
+});
+
+
 
 const url = 'wss://exitpoints.herokuapp.com/8081'
 const connection = new WebSocket(url)
@@ -233,35 +194,27 @@ connection.onmessage = e => {
     });
     });
 
-    // experimental:
-    // let currentSequenceId = -1;
-
-    // const START = 41;
-
-    // let intervals = [0, 4, 7, 11, 12, 11, 7, 4];
-    // sequence =  intervals.map(x => x + START);
-
-    // const NOTE_ON = 0x90;
-    // const NOTE_OFF = 0x80;
-
-    // const NOTE_DURATION = 300;
-
-    // const playNote = function() {
-    //     if (currentSequenceId >= 0) {
-    //         midiOutput.send([NOTE_OFF, sequence[currentSequenceId], 0x7f]);
-    //     }
-
-    //     currentSequenceId++;
-    //     if (currentSequenceId >= sequence.length) {
-    //         currentSequenceId = 0;
-    //     }
-    //     midiOutput.send([NOTE_ON, sequence[currentSequenceId], 0x7f]);
-
-    //     setTimeout(playNote, NOTE_DURATION);
-    // }
-    ///////
 
     
+WebMidi.enable(function (err) {
+
+    if (err) {
+    console.log("WebMidi could not be enabled.", err);
+    } else {
+        console.log("WebMidi enabled!");
+        console.log(WebMidi.inputs);
+        console.log(WebMidi.outputs);
+        outputs = WebMidi.outputs
+        inputs = WebMidi.inputs
+        for(i =0; i< outputs.length; i++){
+            $('#MIDIOutputSelector').append('<option id="' + i + '">' + outputs[i].name + '</option>');
+        }
+        for(i =0; i< inputs.length; i++){
+            $('#MIDIInputSelector').append('<option id="' + i + '">' + inputs[i].name + '</option>');
+        }
+    }
+
+    }, true);
 
 
 
