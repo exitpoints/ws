@@ -1,3 +1,4 @@
+
 <html>
     <head>
         <script
@@ -6,6 +7,49 @@
             crossorigin="anonymous">
         </script>
     </head>
+    <style>
+        /* Dropdown Button */
+        .dropbtn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        }
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+        position: relative;
+        display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #ddd;}
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {display: block;}
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {background-color: #3e8e41;}
+    </style>
     <body>
         <h1>Exit Points experimental clock</h1>
         <br>
@@ -32,12 +76,33 @@
         <br>
         MIDI Timing 11111000 (Client-side) <div id="MIDITiming"></div>
 
+        <br>
+        <br>
+        <!-- <div class="dropdown">
+            <button class="dropbtn">MIDI Output</button>
+            <div class="dropdown-content" id="MIDIOutputSelector">
+
+            </div>
+          </div> -->
+          Just to test that this works... Select your MIDI input and that device should play the theme song from stranger things (not mapped to bpm yet)
+          <select id="MIDIOutputSelector">
+			<option value="None">-- Select --</option>
+			
+        </select>
+    
+
     </body>
 
 
 
 
 <script>
+//! OSC/UDP is a pain in the browser...
+// const osc = new OSC({ plugin: new OSC.DatagramPlugin() })
+// osc.open({ port: 9912 })
+
+// // send only this message to `localhost:9002`
+// osc.send(new OSC.Message('/test'), { port: 9002 })
 
 // navigator.requestMIDIAccess()
 //     .then(onMIDISuccess, onMIDIFailure);
@@ -54,6 +119,61 @@
 // }
 
 
+let midiOutput = null;
+
+////// just for experimenting: play the stranger things theme: 
+let currentSequenceId = -1;
+
+const START = 41;
+
+let intervals = [0, 4, 7, 11, 12, 11, 7, 4];
+sequence =  intervals.map(x => x + START);
+
+const NOTE_ON = 0x90;
+const NOTE_OFF = 0x80;
+
+let NOTE_DURATION = 300;
+
+
+const playNote = function() {
+  if (currentSequenceId >= 0) {
+    midiOutput.send([NOTE_OFF, sequence[currentSequenceId], 0x7f]);
+  }
+
+  currentSequenceId++;
+  if (currentSequenceId >= sequence.length) {
+    currentSequenceId = 0;
+  }
+  midiOutput.send([NOTE_ON, sequence[currentSequenceId], 0x7f]);
+
+  setTimeout(playNote, NOTE_DURATION);
+}
+//
+
+let outputs = []
+    navigator.requestMIDIAccess()
+    .then(function(midiAccess) {
+        outputs = Array.from(midiAccess.outputs.values());
+    // console.log(outputs);
+
+
+
+    for(i =0; i< outputs.length; i++){
+        $('#MIDIOutputSelector').append('<option id="' + i + '">' + outputs[i].name + '</option>');
+    }
+});
+    // midiOutput.send([0b10000000, 0b00011100, 01111111]); // binary
+$("#MIDIOutputSelector").change(function() {
+    var id = $(this).find('option:selected').attr('id');
+
+    // var id = $(this).children(":selected").attr("id");
+    console.log('MIDI Output set to: ', outputs[id].name)
+    midiOutput = outputs[id]
+    playNote()
+    // midiOutput.send([250])
+    
+});
+
 const url = 'wss://exitpoints.herokuapp.com/8081'
 const connection = new WebSocket(url)
 
@@ -68,16 +188,22 @@ connection.onmessage = e => {
         case "beat":
         document.getElementById("beat").innerHTML = msg.data
         // beat.textContent = msg.data
-
+        if(midiOutput){
+                // midiOutput.send([0x90, 0x3C, 0x80])
+            }
         // $("beat").update(msg.data);
         //console.log(msg.data)
         break;
         case "MIDI_Timing":
             document.getElementById("MIDITiming").innerHTML = MIDITimingCount++
+            if(midiOutput){
+                // midiOutput.send([248, 0, 0])
+            }
         break
         case "bpm":
             document.getElementById("bpm").value = msg.data
             console.log(msg.data)
+            
         break
     }
 }
@@ -106,6 +232,38 @@ connection.onmessage = e => {
 
     });
     });
+
+    // experimental:
+    // let currentSequenceId = -1;
+
+    // const START = 41;
+
+    // let intervals = [0, 4, 7, 11, 12, 11, 7, 4];
+    // sequence =  intervals.map(x => x + START);
+
+    // const NOTE_ON = 0x90;
+    // const NOTE_OFF = 0x80;
+
+    // const NOTE_DURATION = 300;
+
+    // const playNote = function() {
+    //     if (currentSequenceId >= 0) {
+    //         midiOutput.send([NOTE_OFF, sequence[currentSequenceId], 0x7f]);
+    //     }
+
+    //     currentSequenceId++;
+    //     if (currentSequenceId >= sequence.length) {
+    //         currentSequenceId = 0;
+    //     }
+    //     midiOutput.send([NOTE_ON, sequence[currentSequenceId], 0x7f]);
+
+    //     setTimeout(playNote, NOTE_DURATION);
+    // }
+    ///////
+
+    
+
+
 
 </script>
 

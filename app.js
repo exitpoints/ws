@@ -1,4 +1,5 @@
-
+const path = require('path');
+const express = require('express')
 let wss; 
 
 let bpm = 60
@@ -121,13 +122,18 @@ let ws; // keep this here
 if (mode === "server"){
     
     // run the serverconst WebSocket = require('ws');
-    const app = require('express')()
+    const app = express()
     const http = require('http').createServer(app);;
     // app.get('/', function(req, res) {
     //     res.sendFile('index.html');
     // })
+    // console.log(__dirname + '/bower_components')
+    // app.use('/bower_components/', express.static(__dirname + '/bower_components/'));
+
+    // app.use(express.static(__dirname + '/bower_components'));
+
     app.get('/', function(req, res){
-        res.sendfile('index.html', { root: __dirname } );
+        res.sendFile('index.html', { root: __dirname } );
     });
 
     let listenPort = (process.env.PORT || 8081)

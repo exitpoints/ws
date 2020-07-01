@@ -1,0 +1,15 @@
+{
+  "name": "osc-js",
+  "homepage": "https://github.com/adzialocha/osc-js",
+  "version": "2.1.0",
+  "_release": "2.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.1.0",
+    "commit": "e85863483a6f6b59b1f7b4e9d1f228143cd4a09a"
+  },
+  "_source": "https://github.com/adzialocha/osc-js.git",
+  "_target": "^2.1.0",
+  "_originalSource": "osc-js",
+  "_direct": true
+}
