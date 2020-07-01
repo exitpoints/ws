@@ -7,8 +7,7 @@
         </script>
     </head>
     <body>
-        Beat: <div id="beat">1</div>
-        Beats per Bar: <div id="bpb">4</div>
+        Beat: <div id="beat" style = "display: inline-block">1</div>/<div id="bpb" style="display: inline-block">4</div>
         <br>
         MIDI Timing 11111000 (Client-side) <div id="MIDITiming"></div>
 
@@ -59,32 +58,7 @@ connection.onmessage = e => {
 
         break
     }
-//   console.log(msg)
-
-
-//   
-
-
 }
-
-
-// https://webaudio.github.io/web-midi-api/#a-simple-loopback
-// https://www.keithmcmillen.com/blog/making-music-in-the-browser-web-midi-api/
-// http://tangiblejs.com/posts/web-midi-music-and-show-control-in-the-browser
-// https://www.toptal.com/web/creating-browser-based-audio-applications-controlled-by-midi-hardware
-
-let midi = null
-
-function onMIDIMessage(event) {
-  let data = event.data,
-    cmd = data[0] >> 4,
-    channel = data[0] & 0xf,
-    type = data[0] & 0xf0,
-    note = data[1],
-    velocity = data[2]
-  console.log({cmd, channel, type, note, velocity})
-}
-
 
 </script>
 
