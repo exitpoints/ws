@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <script
+            src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous">
+        </script>
+    </head>
+    <body>
+        Beat: <div id="beat">1</div>
+        <br>
+        MIDI Timing 11111000 (Client-side) <div id="MIDITiming"></div>
+
+    </body>
+
+
+
+
+<script>
+
+
+
+
+const url = 'ws://localhost:8081'
+const connection = new WebSocket(url)
+
+connection.onopen = () => {
+//   connection.send('hey')
+}
+
+let MIDITimingCount = 0
+connection.onmessage = e => {
+    let msg = JSON.parse(e.data)
+    switch (msg.cmd){
+        case "beat":
+        document.getElementById("beat").innerHTML = msg.data
+        // beat.textContent = msg.data
+
+        // $("beat").update(msg.data);
+        //console.log(msg.data)
+        break;
+        case "MIDI_Timing":
+            document.getElementById("MIDITiming").innerHTML = MIDITimingCount++
+
+            
+
+        break
+    }
+//   console.log(msg)
+
+
+//   
+
+
+}
+
+</script>
+
+
+</html>

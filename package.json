@@ -20,6 +20,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "http": "0.0.1-security",
+    "midi-clock": "0.0.1",
+    "nanotimer": "^0.3.15",
     "node-osc": "^5.1.0",
     "osc-min": "^1.1.2",
     "progress": "^2.0.3",

@@ -1,8 +1,107 @@
+// var MidiClock = require('midi-clock')
+ 
+// // in node just do this (uses process.hrtime):
+// var clock = MidiClock()
+ 
+// // in browser
+// var audioContext = 'test'
+// var clock = MidiClock(audioContext)
+ 
+// clock.start()
+ 
+// clock.on('position', function(position){
+ 
+//   // log on each beat, ignore the rest
+//   var microPosition = position % 24
+//   if (microPosition === 0){
+//     console.log('Beat:', position / 24)
+//   }
+ 
+// })
+ 
+// setTimeout(function(){
+//   // change to 120bpm after 10 seconds
+//   clock.setTempo(40)
+// }, 3000)
+
+// 120 BPM = 120 Quarter Notes per Minute
+
+// 60 / 120 = 0.5 seconds per beat
+
+// 500ms / 96 = 5.208333ms per clock tick.
+let wss; 
+
+let bpm = 60
+
+let secondsPerBeat = 60 / bpm * 1000.
+
+let ppqn = secondsPerBeat / 24 
+
+let t = ppqn + 'm'
+
+let beatsPerBar = 4
+let beat = 1
+
+let count = 0
+console.log(t, ppqn * 24)
+
+console.log(bpm, secondsPerBeat, ppqn)
+
+var NanoTimer = require('nanotimer');
+ 
+ 
+ 
+function clock(){
+    var timer = new NanoTimer();
+    timer.setInterval(timingClock, '', t);
+}
+ 
+function timingClock(){
+
+    //for(i = 0; i < 24; i++){
+        // console.log(11111000);
+        let msg = JSON.stringify({
+            cmd: 'MIDI_Timing',
+            data: 11111000
+        })
+        send(msg)
+        if (count === 23){
+            count = 0
+        } if (count === 0){
+            
+            let msg = JSON.stringify({
+                cmd: 'beat',
+                data: beat
+            })
+            send(msg)
+            beat++
+            if(beat > beatsPerBar){
+                beat = 1
+            }
+        }
+        count++
+   // }
+
+}
+
+
+function send(msg){
+
+    wss.clients.forEach(function each(client) {
+        //   if (client == ignore) return;
+          try {
+              client.send(msg);
+          } catch (e) {
+              console.error(e);
+          };
+      });
+  }
+
 // this script runs at either side
 // it's function as either a server or client is determined by a cli arg
-console.log(process.argv[2] + ' mode')
+// console.log(process.argv[2] + ' mode')
 
-const mode = process.argv[2]
+const mode = "server"
 if (mode === 'client' && !process.argv[3]){
     console.log('error: client mode requires a 2nd argument to specify server IP address\nexample:\n\nnpm start client localhost')
     process.exit()
@@ -36,11 +135,22 @@ if (mode === "server"){
     // run the serverconst WebSocket = require('ws');
     const app = require('express')()
     const http = require('http').createServer(app);;
+    // app.get('/', function(req, res) {
+    //     res.sendFile('index.html');
+    // })
+    app.get('/', function(req, res){
+        res.sendfile('index.html', { root: __dirname } );
+    });
 
     let listenPort = (process.env.PORT || 8081)
-    const wss = new WebSocket.Server({ 'server': http, clientTracking: true });
+    wss = new WebSocket.Server({ 'server': http, clientTracking: true });
     http.listen(listenPort, function(){
     })
+
+
+    // start the midi clock 
+    clock();
+
     wss.on('connection', function connection(ws, req, client) {
 
     console.log('new connection established ')
