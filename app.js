@@ -196,6 +196,9 @@ if (mode === "server"){
                 
             break;
 
+            case "bpm":
+                newBpm = msg.data
+            break;
         
             default:
                 console.log('client sent message with unknown cmd: ' + msg)
