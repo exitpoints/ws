@@ -38,7 +38,7 @@ function clock(value){
     send(msg)
 
 }
- 
+ // see https://www.midi.org/specifications-old/item/table-1-summary-of-midi-message
 function timingClock(){
 
     //for(i = 0; i < 24; i++){
