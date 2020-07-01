@@ -21,21 +21,24 @@ console.log(bpm, secondsPerBeat, ppqn)
 var NanoTimer = require('nanotimer');
  
  
- 
-function clock(){
-    var timer = new NanoTimer();
-    updateBPM(bpm)
-    timer.setInterval(timingClock, '', t);
-}
- 
-function updateBPM(value){
+var timer = new NanoTimer(); 
+
+function clock(value){
     bpm = value
+    timer.clearInterval()
+    secondsPerBeat = 60 / bpm * 1000.
+    ppqn = secondsPerBeat / 24 
+    t = ppqn + 'm'
+    timer.setInterval(timingClock, '', t);
+    
     let msg = JSON.stringify({
         cmd: 'bpm',
         data: bpm
     })
     send(msg)
+
 }
+ 
 function timingClock(){
 
     //for(i = 0; i < 24; i++){
@@ -58,7 +61,8 @@ function timingClock(){
             if(beat > beatsPerBar){
                 if(bpm != newBpm){
                     // if client sent a new bpm value, only update it at the start of new bar
-                    updateBPM(newBpm)
+                    
+                    clock(newBpm)
                 }
                 beat = 1
             }
@@ -133,7 +137,7 @@ if (mode === "server"){
 
 
     // start the midi clock 
-    clock();
+    clock(bpm);
 
     wss.on('connection', function connection(ws, req, client) {
         
