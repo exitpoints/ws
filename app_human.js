@@ -69,9 +69,9 @@ function send(msg){
 
 // this script runs at either side
 // it's function as either a server or client is determined by a cli arg
-// console.log(process.argv[2] + ' mode')
+console.log(process.argv[2] + ' mode')
 
-const mode = "server"
+const mode = process.argv[2]
 if (mode === 'client' && !process.argv[3]){
     console.log('error: client mode requires a 2nd argument to specify server IP address\nexample:\n\nnpm start client localhost')
     process.exit()
