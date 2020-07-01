@@ -61,7 +61,7 @@ function timingClock(){
             if(beat > beatsPerBar){
                 if(bpm != newBpm){
                     // if client sent a new bpm value, only update it at the start of new bar
-                    
+                    beat = 1
                     clock(newBpm)
                 }
                 beat = 1
