@@ -136,7 +136,12 @@ if (mode === "server"){
     clock();
 
     wss.on('connection', function connection(ws, req, client) {
-
+        
+        let msg = JSON.stringify({
+            cmd: 'bpm',
+            data: bpm
+        })
+        ws.send(msg)
     console.log('new connection established ')
     const localSend = new Client('127.0.0.1', localSendPort);
     console.log('Configure your local pd patch(es) to listen on UDP Port ' + localSendPort)
