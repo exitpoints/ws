@@ -22,7 +22,12 @@
         <br>
         <br>
         <br>
-        BPM: <div id="bpm" style = "display: inline-block"></div>
+        <div class="col-md-5 mt-4 mx-auto">
+            <label for="bpm" class="text-capitalize">BPM:</label>
+            <input id="bpm" type="text" class="number">
+          </div>
+
+        <br>
         Beat: <div id="beat" style = "display: inline-block">1</div>/<div id="bpb" style="display: inline-block">4</div>
         <br>
         MIDI Timing 11111000 (Client-side) <div id="MIDITiming"></div>
@@ -71,10 +76,26 @@ connection.onmessage = e => {
             document.getElementById("MIDITiming").innerHTML = MIDITimingCount++
         break
         case "bpm":
-            document.getElementById("bpm").innerHTML = msg.data
+            document.getElementById("bpm").value = msg.data
+            console.log(msg.data)
         break
     }
 }
+
+
+// BPM entry
+    $(document).ready(function () {
+
+    $('input.number').keyup(function (event) {
+    if (event.which != 8 && event.which != 0 && event.which < 48 || event.which > 57) {
+        $(this).val(function (index, value) {
+        console.log(document.getElementById('bpm').value)
+        return value.replace(/\D/g, "");
+        });
+    }
+
+    });
+    });
 
 </script>
 

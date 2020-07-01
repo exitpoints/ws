@@ -2,6 +2,7 @@
 let wss; 
 
 let bpm = 60
+let newBpm = 60
 
 let secondsPerBeat = 60 / bpm * 1000.
 
@@ -55,6 +56,10 @@ function timingClock(){
             send(msg)
             beat++
             if(beat > beatsPerBar){
+                if(bpm != newBpm){
+                    // if client sent a new bpm value, only update it at the start of new bar
+                    updateBPM(newBpm)
+                }
                 beat = 1
             }
         }
