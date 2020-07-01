@@ -23,9 +23,18 @@ var NanoTimer = require('nanotimer');
  
 function clock(){
     var timer = new NanoTimer();
+    updateBPM(bpm)
     timer.setInterval(timingClock, '', t);
 }
  
+function updateBPM(value){
+    bpm = value
+    let msg = JSON.stringify({
+        cmd: 'bpm',
+        data: bpm
+    })
+    send(msg)
+}
 function timingClock(){
 
     //for(i = 0; i < 24; i++){
