@@ -39,13 +39,132 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-6",
-					"linecount" : 8,
+					"id" : "obj-30",
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 297.0, -8.0, 150.0, 114.0 ],
-					"text" : "*note* the heroku server will go to sleep after 30 minutes of inactivity. if the script fails to run at first wait a few seconds, then click script start. should wrok fine. msg michael if theres an issue"
+					"patching_rect" : [ 515.0, 362.0, 35.0, 20.0 ],
+					"text" : "bpm"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-28",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 451.5, 285.0, 71.0, 22.0 ],
+					"text" : "fromsymbol"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-27",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 324.0, 95.0, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-25",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 152.0, 149.0, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-23",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 120.5, 150.0, 47.0 ],
+					"text" : "If this is your first time running this app, click here first. >>>>>>>>>>>>"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-21",
+					"linecount" : 4,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 39.0, 379.0, 150.0, 60.0 ],
+					"text" : "<< Click this button to use the web-app version, which includes changing the bpm!"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-19",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 13.0, 379.0, 24.0, 24.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-17",
+					"linecount" : 2,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 13.0, 445.0, 295.0, 35.0 ],
+					"text" : ";\rmax launch_browser https://exitpoints.herokuapp.com"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-14",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 430.0, 407.0, 102.0, 20.0 ],
+					"text" : "The beat counter"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-8",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 152.0, 179.0, 98.0, 22.0 ],
+					"text" : "script npm install"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-6",
+					"linecount" : 9,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 170.0, 16.0, 150.0, 127.0 ],
+					"text" : "*note* the heroku server will go to sleep after 30 minutes of inactivity. if the script fails to run at first wait a few seconds, then click script start. this button >>>>>>>>>>>>>>> should wrok fine. msg michael if theres an issue"
 				}
 
 			}
@@ -56,7 +175,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 365.0, 263.0, 50.0, 22.0 ]
+					"patching_rect" : [ 463.0, 362.0, 50.0, 22.0 ],
+					"text" : "\"125\""
 				}
 
 			}
@@ -67,8 +187,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 280.0, 263.0, 50.0, 22.0 ],
-					"text" : "3"
+					"patching_rect" : [ 378.0, 407.0, 50.0, 22.0 ],
+					"text" : "4"
 				}
 
 			}
@@ -80,7 +200,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 237.5, 226.0, 50.0, 35.0 ],
+					"patching_rect" : [ 335.5, 325.0, 50.0, 35.0 ],
 					"text" : "11111000"
 				}
 
@@ -92,7 +212,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 158.0, 195.0, 50.0, 22.0 ]
+					"patching_rect" : [ 276.0, 325.0, 50.0, 22.0 ]
 				}
 
 			}
@@ -103,7 +223,7 @@
 					"numinlets" : 5,
 					"numoutlets" : 5,
 					"outlettype" : [ "", "", "", "", "" ],
-					"patching_rect" : [ 226.0, 149.0, 189.0, 22.0 ],
+					"patching_rect" : [ 324.0, 248.0, 189.0, 22.0 ],
 					"text" : "route OSC MIDI_Timing beat bpm"
 				}
 
@@ -115,7 +235,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 226.0, 34.0, 64.0, 22.0 ],
+					"patching_rect" : [ 324.0, 133.0, 64.0, 22.0 ],
 					"text" : "script start"
 				}
 
@@ -135,7 +255,7 @@
 					"numoutlets" : 1,
 					"offset" : [ 0.0, 0.0 ],
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 472.0, 142.0, 400.0, 220.0 ],
+					"patching_rect" : [ 570.0, 241.0, 400.0, 220.0 ],
 					"viewvisibility" : 1
 				}
 
@@ -147,10 +267,12 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 226.0, 108.0, 265.0, 22.0 ],
+					"patching_rect" : [ 324.0, 207.0, 265.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"autostart" : 1,
 						"defer" : 0,
+						"node_bin_path" : "",
+						"npm_bin_path" : "",
 						"watch" : 1
 					}
 ,
@@ -175,6 +297,34 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-17", 0 ],
+					"source" : [ "obj-19", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-8", 0 ],
+					"source" : [ "obj-25", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-27", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-13", 1 ],
+					"source" : [ "obj-28", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-4", 0 ]
 				}
@@ -189,8 +339,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-13", 1 ],
-					"source" : [ "obj-5", 4 ]
+					"destination" : [ "obj-28", 0 ],
+					"source" : [ "obj-5", 3 ]
 				}
 
 			}
@@ -205,6 +355,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-9", 1 ],
 					"source" : [ "obj-5", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-8", 0 ]
 				}
 
 			}
