@@ -33,7 +33,7 @@
         <br>
         Beat: <div id="beat" style = "display: inline-block">1</div>/<div id="bpb" style="display: inline-block">4</div>
         <br>
-        MIDI Timing 11111000 (Client-side) <div id="MIDITiming"></div>
+        <!-- MIDI Timing 11111000 (Client-side) <div id="MIDITiming"></div> -->
 
         <br>
         <br>
@@ -130,7 +130,7 @@ connection.onopen = () => {
 //   connection.send('hey')
 }
 
-let MIDITimingCount = 0
+// let MIDITimingCount = 0
 connection.onmessage = e => {
     let msg = JSON.parse(e.data)
     switch (msg.cmd){
@@ -144,7 +144,7 @@ connection.onmessage = e => {
         //console.log(msg.data)
         break;
         case "MIDI_Timing":
-            document.getElementById("MIDITiming").innerHTML = MIDITimingCount++
+            // document.getElementById("MIDITiming").innerHTML = MIDITimingCount++
             if(midiOutput){
                 // midiOutput.send([248, 0, 0])
             }

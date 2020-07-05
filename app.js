@@ -2,7 +2,6 @@ const path = require('path');
 const express = require('express')
 const fs = require('fs')
 const manufacturers = JSON.parse(fs.readFileSync('sysexCompanies.json'))
-console.log(manufacturers)
 let wss; 
 
 let bpm = 60
